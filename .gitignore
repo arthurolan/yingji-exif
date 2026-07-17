@@ -1,0 +1,11 @@
+.DS_Store
+*.tgz
+node_modules/
+
+# 本机真实测试样片可能包含作者、版权与精确 GPS，不提交到仓库。
+/无EXIF.jpeg
+/国外GPS.jpg
+/EXIF似乎不正常.jpeg
+/旋转方向，无GPS.jpeg
+/有EXIF但无GPS.jpg
+/国内GPS.jpeg

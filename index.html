@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="影迹·EXIF：在本机浏览器内查看照片拍摄参数与 GPS 位置。">
+    <meta name="color-scheme" content="dark">
+    <title>影迹·EXIF</title>
+    <link rel="stylesheet" href="assets/css/style.css?v=0.1.6">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="masthead">
+        <a class="brand" href="./" aria-label="影迹·EXIF 首页">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>影迹·EXIF</span>
+        </a>
+        <p class="privacy-badge"><span aria-hidden="true">●</span> 图片不上传，仅在本机解析</p>
+      </header>
+
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">PHOTO METADATA VIEWER</p>
+        <h1 id="page-title">一张照片背后的拍摄数据</h1>
+        <p class="intro-copy">拖入一张照片，查看相机、镜头、曝光参数与拍摄位置。原图不会离开你的设备。</p>
+      </section>
+
+      <section id="drop-zone" class="drop-zone" aria-labelledby="drop-title">
+        <input id="file-input" class="visually-hidden" type="file" accept=".jpg,.jpeg,.jpe,.tif,.tiff,.webp,.png,.heic,.heif">
+        <div class="drop-icon" aria-hidden="true"><span></span></div>
+        <div>
+          <h2 id="drop-title">拖入图片</h2>
+          <p>或 <button id="choose-button" class="text-button" type="button">点击选择</button></p>
+        </div>
+        <p class="format-note">首版重点支持 JPEG · 单张最大 300 MB · 超过 100 MB 不生成预览</p>
+      </section>
+
+      <div id="status" class="status" role="status" aria-live="polite" hidden></div>
+
+      <section id="result" class="result" aria-label="图片元数据" hidden>
+        <div class="result-toolbar">
+          <div>
+            <p class="eyebrow">CURRENT IMAGE</p>
+            <h2 id="result-file-name">—</h2>
+          </div>
+          <button id="clear-button" class="secondary-button" type="button">退出照片</button>
+        </div>
+
+        <div class="overview-grid">
+          <figure class="preview-frame">
+            <img id="preview-image" alt="当前图片预览" hidden>
+            <div id="preview-fallback" class="preview-fallback" hidden>浏览器无法预览此格式<br>仍会尝试读取元数据</div>
+          </figure>
+          <section class="file-panel" aria-labelledby="file-info-title">
+            <h3 id="file-info-title">文件信息</h3>
+            <dl id="file-info" class="data-list"></dl>
+          </section>
+        </div>
+
+        <section class="metadata-panel" aria-labelledby="main-data-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">CAPTURE DATA</p>
+              <h2 id="main-data-title">主要拍摄参数</h2>
+            </div>
+            <p id="metadata-summary" class="section-note"></p>
+          </div>
+          <dl id="main-metadata" class="metadata-grid"></dl>
+        </section>
+
+        <section id="gps-panel" class="gps-panel" aria-labelledby="gps-title" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">LOCATION</p>
+              <h2 id="gps-title">拍摄位置</h2>
+            </div>
+            <button id="copy-coordinates" class="secondary-button" type="button">复制坐标</button>
+          </div>
+          <dl id="gps-data" class="metadata-grid compact"></dl>
+          <fieldset id="apple-mode" class="apple-mode" hidden>
+            <legend>苹果地图坐标模式</legend>
+            <label><input type="radio" name="apple-map-mode" value="china" checked> 中国大陆网络</label>
+            <label><input type="radio" name="apple-map-mode" value="global"> 境外或代理网络</label>
+          </fieldset>
+          <div id="map-links" class="map-links"></div>
+          <p class="map-warning">只有点击地图按钮后，当前 GPS 坐标才会传给所选地图服务。</p>
+        </section>
+
+        <details id="all-metadata-panel" class="all-metadata-panel">
+          <summary>展开全部元数据 <span id="tag-count"></span></summary>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>分组</th><th>字段</th><th>值</th></tr></thead>
+              <tbody id="all-metadata"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <footer>
+        <p>影迹·EXIF 不修改原图，也不保存图片或元数据。</p>
+        <p class="footer-credit">© 2026 E.O创作 · <a href="mailto:arthurolan99@gmail.com">arthurolan99@gmail.com</a></p>
+      </footer>
+    </main>
+
+    <script src="assets/vendor/exifreader/exif-reader.js"></script>
+    <script src="assets/js/coordinates.js"></script>
+    <script src="assets/js/app.js?v=0.1.4"></script>
+  </body>
+</html>
