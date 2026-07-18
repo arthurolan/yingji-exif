@@ -19,13 +19,18 @@ test("台北坐标不应被大陆多边形误判", () => {
 });
 
 test("大陆坐标的地图链接应分别使用目标坐标系", () => {
-  const converted = coordinates.convertForMaps(116.397389, 39.908722);
+  const wgs = { lon: 116.397389, lat: 39.908722 };
+  const converted = coordinates.convertForMaps(wgs.lon, wgs.lat);
   const links = coordinates.buildMapLinks(converted, "china");
   assert.match(links.apple, /maps\.apple\.com/);
   assert.match(links.amap, /coordinate=gaode/);
   assert.match(links.baidu, /coord_type=bd09ll/);
   assert.match(links.baidu, /src=webapp\.yingji\.exif/);
-  assert.match(links.google, /api=1/);
+  assert.equal(
+    links.google,
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${wgs.lat.toFixed(8)},${wgs.lon.toFixed(8)}`)}`,
+  );
+  assert.doesNotMatch(links.google, new RegExp(converted.gcj.lat.toFixed(8)));
 });
 
 test("境外坐标传给百度地图时应声明为 WGS-84", () => {
