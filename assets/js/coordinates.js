@@ -102,15 +102,17 @@
   }
 
   function buildMapLinks(converted, appleMode) {
-    const mapCoord = converted.shifted ? converted.gcj : converted.wgs;
+    const amapCoord = converted.shifted ? converted.gcj : converted.wgs;
     const baiduCoord = converted.shifted ? converted.bd : converted.wgs;
     const appleCoord = converted.shifted && appleMode === "china" ? converted.gcj : converted.wgs;
+    // 消费版 Google 地图的中国大陆底图经真实地物测试与 GCJ-02 对齐。
+    const googleCoord = converted.shifted ? converted.gcj : converted.wgs;
     const baiduCoordType = converted.shifted ? "bd09ll" : "wgs84";
     const label = encodeURIComponent("照片拍摄位置");
-    const googleQuery = encodeURIComponent(`${converted.wgs.lat.toFixed(8)},${converted.wgs.lon.toFixed(8)}`);
+    const googleQuery = encodeURIComponent(`${googleCoord.lat.toFixed(8)},${googleCoord.lon.toFixed(8)}`);
     return {
       apple: `https://maps.apple.com/?ll=${appleCoord.lat.toFixed(8)},${appleCoord.lon.toFixed(8)}&q=${label}`,
-      amap: `https://uri.amap.com/marker?position=${mapCoord.lon.toFixed(8)},${mapCoord.lat.toFixed(8)}&name=${label}&coordinate=gaode`,
+      amap: `https://uri.amap.com/marker?position=${amapCoord.lon.toFixed(8)},${amapCoord.lat.toFixed(8)}&name=${label}&coordinate=gaode`,
       baidu: `https://api.map.baidu.com/marker?location=${baiduCoord.lat.toFixed(8)},${baiduCoord.lon.toFixed(8)}&title=${label}&content=${label}&output=html&coord_type=${baiduCoordType}&src=webapp.yingji.exif`,
       google: `https://www.google.com/maps/search/?api=1&query=${googleQuery}`,
     };

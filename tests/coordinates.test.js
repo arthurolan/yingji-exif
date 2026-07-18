@@ -19,7 +19,7 @@ test("台北坐标不应被大陆多边形误判", () => {
 });
 
 test("大陆坐标的地图链接应分别使用目标坐标系", () => {
-  const wgs = { lon: 116.397389, lat: 39.908722 };
+  const wgs = { lon: 117.20039111166666, lat: 39.131320833333334 };
   const converted = coordinates.convertForMaps(wgs.lon, wgs.lat);
   const links = coordinates.buildMapLinks(converted, "china");
   assert.match(links.apple, /maps\.apple\.com/);
@@ -28,9 +28,9 @@ test("大陆坐标的地图链接应分别使用目标坐标系", () => {
   assert.match(links.baidu, /src=webapp\.yingji\.exif/);
   assert.equal(
     links.google,
-    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${wgs.lat.toFixed(8)},${wgs.lon.toFixed(8)}`)}`,
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${converted.gcj.lat.toFixed(8)},${converted.gcj.lon.toFixed(8)}`)}`,
   );
-  assert.doesNotMatch(links.google, new RegExp(converted.gcj.lat.toFixed(8)));
+  assert.doesNotMatch(links.google, new RegExp(wgs.lat.toFixed(8)));
 });
 
 test("境外坐标传给百度地图时应声明为 WGS-84", () => {
@@ -38,6 +38,10 @@ test("境外坐标传给百度地图时应声明为 WGS-84", () => {
   const links = coordinates.buildMapLinks(converted, "china");
   assert.equal(converted.shifted, false);
   assert.match(links.baidu, /coord_type=wgs84/);
+  assert.equal(
+    links.google,
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${converted.wgs.lat.toFixed(8)},${converted.wgs.lon.toFixed(8)}`)}`,
+  );
 });
 
 test("非法坐标应被拒绝", () => {
