@@ -10,8 +10,7 @@ test("静态网页引用的本地核心资源都存在", () => {
   const references = [...html.matchAll(/(?:src|href)="([^"]+)"/g)]
     .map((match) => match[1])
     .filter((reference) => !reference.startsWith("#") && !reference.startsWith("mailto:") && reference !== "./")
-    .filter((reference) => reference !== "https://arthurolan.github.io/yingji-exif/")
-    .filter((reference) => reference !== "https://gc.zgo.at/count.v5.js");
+    .filter((reference) => reference !== "https://arthurolan.github.io/yingji-exif/");
 
   assert.ok(references.length >= 4);
   for (const reference of references) {
@@ -34,7 +33,7 @@ test("页面名称和隐私提示使用已确认文案", () => {
   assert.match(html, /id="visit-counter-trigger"/);
   assert.match(html, /id="visit-counter-bubble"[^>]*role="status"[^>]*aria-live="polite"[^>]*hidden/);
   assert.match(html, /data-goatcounter="https:\/\/yingji-exif-arthurolan\.goatcounter\.com\/count"/);
-  assert.match(html, /src="https:\/\/gc\.zgo\.at\/count\.v5\.js"/);
+  assert.match(html, /src="assets\/vendor\/goatcounter\/count\.v5\.js"/);
   assert.match(html, /integrity="sha384-atnOLvQb9t\+jTSipvd75X2yginT4PjVbqDdlJAmxMm\+wYElFmeR6EmLP5bYeoRVQ"/);
   assert.match(app, /GPS 日期 \/ 时间（UTC）/);
   assert.match(app, /counter\/TOTAL\.json/);
