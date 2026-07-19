@@ -33,11 +33,56 @@
     allMetadata: document.querySelector("#all-metadata"),
     allMetadataPanel: document.querySelector("#all-metadata-panel"),
     tagCount: document.querySelector("#tag-count"),
+    visitCounterTrigger: document.querySelector("#visit-counter-trigger"),
+    visitCounterBubble: document.querySelector("#visit-counter-bubble"),
   };
 
   let previewUrl = null;
   let currentGps = null;
   let convertedGps = null;
+  let visitCountPromise = null;
+  let visitCounterTimer = null;
+
+  function hideVisitCounter() {
+    els.visitCounterBubble.hidden = true;
+    els.visitCounterTrigger.setAttribute("aria-expanded", "false");
+  }
+
+  function displayVisitCounter(message) {
+    window.clearTimeout(visitCounterTimer);
+    els.visitCounterBubble.textContent = message;
+    els.visitCounterBubble.hidden = false;
+    els.visitCounterTrigger.setAttribute("aria-expanded", "true");
+    visitCounterTimer = window.setTimeout(hideVisitCounter, 3000);
+  }
+
+  function loadVisitCount() {
+    if (!visitCountPromise) {
+      visitCountPromise = fetch("https://yingji-exif-arthurolan.goatcounter.com/counter/TOTAL.json", { mode: "cors" })
+        .then((response) => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        })
+        .then((data) => {
+          if (!data || typeof data.count !== "string" || !data.count.trim()) throw new Error("invalid response");
+          return data.count.trim();
+        })
+        .catch((error) => {
+          visitCountPromise = null;
+          throw error;
+        });
+    }
+    return visitCountPromise;
+  }
+
+  async function showVisitCounter() {
+    displayVisitCounter("正在读取累计访问…");
+    try {
+      displayVisitCounter(`累计访问 ${await loadVisitCount()} 次`);
+    } catch (error) {
+      displayVisitCounter("访问统计暂时无法加载");
+    }
+  }
 
   function setStatus(message, type) {
     els.status.textContent = message;
@@ -473,6 +518,17 @@
   els.clearButton.addEventListener("click", resetResult);
   els.copyCoordinates.addEventListener("click", copyCoordinates);
   els.appleMode.addEventListener("change", renderMapLinks);
+  els.visitCounterTrigger.addEventListener("mouseenter", showVisitCounter);
+  els.visitCounterTrigger.addEventListener("focus", showVisitCounter);
+  els.visitCounterTrigger.addEventListener("click", showVisitCounter);
+  els.visitCounterTrigger.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      showVisitCounter();
+    } else if (event.key === "Escape") {
+      hideVisitCounter();
+    }
+  });
 
   for (const eventName of ["dragenter", "dragover"]) {
     els.dropZone.addEventListener(eventName, (event) => {

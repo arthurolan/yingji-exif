@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="影迹·EXIF：在本机浏览器内查看照片拍摄参数与 GPS 位置。">
     <meta name="color-scheme" content="dark">
+    <link rel="canonical" href="https://arthurolan.github.io/yingji-exif/">
     <title>影迹·EXIF</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=0.1.6">
+    <link rel="stylesheet" href="assets/css/style.css?v=0.1.7">
   </head>
   <body>
     <main class="app-shell">
@@ -97,13 +98,21 @@
       </section>
 
       <footer>
-        <p>影迹·EXIF 不修改原图，也不保存图片或元数据。</p>
+        <p id="visit-counter-trigger" class="visit-counter-trigger" tabindex="0" role="button" aria-describedby="visit-counter-bubble" aria-expanded="false">
+          影迹·EXIF 不修改原图，也不保存图片或元数据。
+          <span id="visit-counter-bubble" class="visit-counter-bubble" role="status" aria-live="polite" hidden></span>
+        </p>
         <p class="footer-credit">© 2026 E.O创作 · <a href="mailto:arthurolan99@gmail.com">arthurolan99@gmail.com</a></p>
       </footer>
     </main>
 
     <script src="assets/vendor/exifreader/exif-reader.js"></script>
     <script src="assets/js/coordinates.js?v=0.1.5"></script>
-    <script src="assets/js/app.js?v=0.1.5"></script>
+    <script src="assets/js/app.js?v=0.1.6"></script>
+    <script data-goatcounter="https://yingji-exif-arthurolan.goatcounter.com/count"
+            data-goatcounter-settings='{"path": "/yingji-exif/"}'
+            async src="https://gc.zgo.at/count.v5.js"
+            crossorigin="anonymous"
+            integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
   </body>
 </html>

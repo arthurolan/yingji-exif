@@ -9,7 +9,9 @@ test("静态网页引用的本地核心资源都存在", () => {
   const html = fs.readFileSync(path.join(projectRoot, "index.html"), "utf8");
   const references = [...html.matchAll(/(?:src|href)="([^"]+)"/g)]
     .map((match) => match[1])
-    .filter((reference) => !reference.startsWith("#") && !reference.startsWith("mailto:") && reference !== "./");
+    .filter((reference) => !reference.startsWith("#") && !reference.startsWith("mailto:") && reference !== "./")
+    .filter((reference) => reference !== "https://arthurolan.github.io/yingji-exif/")
+    .filter((reference) => reference !== "https://gc.zgo.at/count.v5.js");
 
   assert.ok(references.length >= 4);
   for (const reference of references) {
@@ -29,7 +31,16 @@ test("页面名称和隐私提示使用已确认文案", () => {
   assert.match(html, /<button id="clear-button"[^>]*>退出照片<\/button>/);
   assert.match(html, /© 2026 E\.O创作/);
   assert.match(html, /mailto:arthurolan99@gmail\.com/);
+  assert.match(html, /id="visit-counter-trigger"/);
+  assert.match(html, /id="visit-counter-bubble"[^>]*role="status"[^>]*aria-live="polite"[^>]*hidden/);
+  assert.match(html, /data-goatcounter="https:\/\/yingji-exif-arthurolan\.goatcounter\.com\/count"/);
+  assert.match(html, /src="https:\/\/gc\.zgo\.at\/count\.v5\.js"/);
+  assert.match(html, /integrity="sha384-atnOLvQb9t\+jTSipvd75X2yginT4PjVbqDdlJAmxMm\+wYElFmeR6EmLP5bYeoRVQ"/);
   assert.match(app, /GPS 日期 \/ 时间（UTC）/);
+  assert.match(app, /counter\/TOTAL\.json/);
+  assert.match(app, /累计访问 \$\{await loadVisitCount\(\)\} 次/);
+  assert.match(app, /访问统计暂时无法加载/);
+  assert.match(app, /window\.setTimeout\(hideVisitCounter, 3000\)/);
   assert.match(app, /const MAX_FILE_SIZE = 300 \* 1024 \* 1024/);
   assert.match(app, /const MAX_PREVIEW_FILE_SIZE = 100 \* 1024 \* 1024/);
 });
