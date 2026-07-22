@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="影迹·EXIF：在本机浏览器内查看照片拍摄参数与 GPS 位置。">
+    <meta id="meta-description" name="description" content="影迹·EXIF：在本机浏览器内查看照片拍摄参数与 GPS 位置。">
     <meta name="color-scheme" content="dark">
     <link rel="canonical" href="https://arthurolan.github.io/yingji-exif/">
     <title>影迹·EXIF</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=0.1.7">
+    <link rel="stylesheet" href="assets/css/style.css?v=1.1.0">
   </head>
   <body>
     <main class="app-shell">
@@ -16,43 +16,68 @@
           <span class="brand-mark" aria-hidden="true"></span>
           <span>影迹·EXIF</span>
         </a>
-        <p class="privacy-badge"><span aria-hidden="true">●</span> 图片不上传，仅在本机解析</p>
+        <div class="masthead-actions">
+          <div class="language-switch" role="group" aria-label="界面语言">
+            <button class="language-button" type="button" data-language="zh-CN" aria-pressed="true">中文</button>
+            <button class="language-button" type="button" data-language="en" aria-pressed="false">EN</button>
+          </div>
+          <p class="privacy-badge"><span aria-hidden="true">●</span> <span data-i18n="privacyBadge">图片不上传，仅在本机解析</span></p>
+        </div>
       </header>
 
       <section class="intro" aria-labelledby="page-title">
-        <p class="eyebrow">PHOTO METADATA VIEWER</p>
-        <h1 id="page-title">一张照片背后的拍摄数据</h1>
-        <p class="intro-copy">拖入一张照片，查看相机、镜头、曝光参数与拍摄位置。原图不会离开你的设备。</p>
+        <p class="eyebrow">PHOTO METADATA VIEWER · V1.1</p>
+        <h1 id="page-title" data-i18n="pageTitle">一张照片背后的拍摄数据</h1>
+        <p class="intro-copy" data-i18n="introCopy">拖入或点击选择一张照片，查看相机、镜头、曝光参数与拍摄位置。原图不会离开你的设备。</p>
       </section>
 
       <section id="drop-zone" class="drop-zone" aria-labelledby="drop-title">
-        <input id="file-input" class="visually-hidden" type="file" accept=".jpg,.jpeg,.jpe,.tif,.tiff,.webp,.png,.heic,.heif">
+        <input id="file-input" class="visually-hidden" type="file" accept=".jpg,.jpeg,.jpe,.tif,.tiff,.webp,.png,.heic,.heif,.arw,.dng,.nef,.pef">
         <div class="drop-icon" aria-hidden="true"><span></span></div>
         <div>
-          <h2 id="drop-title">拖入图片</h2>
-          <p>或 <button id="choose-button" class="text-button" type="button">点击选择</button></p>
+          <h2 id="drop-title" data-i18n="dropTitle">拖入图片</h2>
+          <p><span data-i18n="or">或</span> <button id="choose-button" class="text-button" type="button" data-i18n="chooseButton">点击选择</button></p>
         </div>
-        <p class="format-note">首版重点支持 JPEG · 单张最大 300 MB · 超过 100 MB 不生成预览</p>
+        <p class="format-note" data-i18n="formatNote">支持 JPEG、PNG、WebP、HEIC/HEIF、TIFF、Sony ARW、Nikon NEF、Pentax PEF 与 DNG · 单张最大 300 MB</p>
       </section>
+
+      <details class="format-support">
+        <summary data-i18n="supportTitle">支持格式说明</summary>
+        <div class="format-support-grid">
+          <section>
+            <h2 data-i18n="supportPreviewTitle">元数据与预览</h2>
+            <p data-i18n="supportPreviewText">JPEG、PNG、WebP 可在主流浏览器中预览，并读取文件中存在的元数据。</p>
+          </section>
+          <section>
+            <h2 data-i18n="supportExtendedTitle">扩展格式</h2>
+            <p data-i18n="supportExtendedText">HEIC/HEIF、TIFF 可读取元数据；预览取决于浏览器与具体编码。常见的无压缩 8-bit TIFF 提供本地后备预览。</p>
+          </section>
+          <section>
+            <h2 data-i18n="supportRawTitle">RAW 格式</h2>
+            <p data-i18n="supportRawText">Sony ARW、Nikon NEF、Pentax PEF 与 DNG 支持读取 EXIF、GPS 等元数据，不进行 RAW 显影；仅在文件含有可用 JPEG 缩略图时显示预览。RAW 单张最大 150 MB。</p>
+          </section>
+        </div>
+      </details>
 
       <div id="status" class="status" role="status" aria-live="polite" hidden></div>
 
       <section id="result" class="result" aria-label="图片元数据" hidden>
         <div class="result-toolbar">
           <div>
-            <p class="eyebrow">CURRENT IMAGE</p>
+            <p class="eyebrow" data-i18n="currentImage">CURRENT IMAGE</p>
             <h2 id="result-file-name">—</h2>
           </div>
-          <button id="clear-button" class="secondary-button" type="button">退出照片</button>
+          <button id="clear-button" class="secondary-button" type="button" data-i18n="clearButton">退出照片</button>
         </div>
 
         <div class="overview-grid">
           <figure class="preview-frame">
             <img id="preview-image" alt="当前图片预览" hidden>
+            <canvas id="preview-canvas" aria-label="当前图片预览" hidden></canvas>
             <div id="preview-fallback" class="preview-fallback" hidden>浏览器无法预览此格式<br>仍会尝试读取元数据</div>
           </figure>
           <section class="file-panel" aria-labelledby="file-info-title">
-            <h3 id="file-info-title">文件信息</h3>
+            <h3 id="file-info-title" data-i18n="fileInfoTitle">文件信息</h3>
             <dl id="file-info" class="data-list"></dl>
           </section>
         </div>
@@ -60,8 +85,8 @@
         <section class="metadata-panel" aria-labelledby="main-data-title">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">CAPTURE DATA</p>
-              <h2 id="main-data-title">主要拍摄参数</h2>
+              <p class="eyebrow" data-i18n="captureData">CAPTURE DATA</p>
+              <h2 id="main-data-title" data-i18n="mainDataTitle">主要拍摄参数</h2>
             </div>
             <p id="metadata-summary" class="section-note"></p>
           </div>
@@ -71,26 +96,26 @@
         <section id="gps-panel" class="gps-panel" aria-labelledby="gps-title" hidden>
           <div class="section-heading">
             <div>
-              <p class="eyebrow">LOCATION</p>
-              <h2 id="gps-title">拍摄位置</h2>
+              <p class="eyebrow" data-i18n="location">LOCATION</p>
+              <h2 id="gps-title" data-i18n="gpsTitle">拍摄位置</h2>
             </div>
-            <button id="copy-coordinates" class="secondary-button" type="button">复制坐标</button>
+            <button id="copy-coordinates" class="secondary-button" type="button" data-i18n="copyCoordinates">复制坐标</button>
           </div>
           <dl id="gps-data" class="metadata-grid compact"></dl>
           <fieldset id="apple-mode" class="apple-mode" hidden>
-            <legend>苹果地图坐标模式</legend>
-            <label><input type="radio" name="apple-map-mode" value="china" checked> 中国大陆网络</label>
-            <label><input type="radio" name="apple-map-mode" value="global"> 境外或代理网络</label>
+            <legend data-i18n="appleModeLegend">苹果地图坐标模式</legend>
+            <label><input type="radio" name="apple-map-mode" value="china" checked> <span data-i18n="appleModeChina">中国大陆网络</span></label>
+            <label><input type="radio" name="apple-map-mode" value="global"> <span data-i18n="appleModeGlobal">境外或代理网络</span></label>
           </fieldset>
           <div id="map-links" class="map-links"></div>
-          <p class="map-warning">只有点击地图按钮后，当前 GPS 坐标才会传给所选地图服务。</p>
+          <p class="map-warning" data-i18n="mapWarning">只有点击地图按钮后，当前 GPS 坐标才会传给所选地图服务。</p>
         </section>
 
         <details id="all-metadata-panel" class="all-metadata-panel">
-          <summary>展开全部元数据 <span id="tag-count"></span></summary>
+          <summary><span data-i18n="allMetadataSummary">展开全部元数据</span> <span id="tag-count"></span></summary>
           <div class="table-scroll">
             <table>
-              <thead><tr><th>分组</th><th>字段</th><th>值</th></tr></thead>
+              <thead><tr><th data-i18n="tableGroup">分组</th><th data-i18n="tableField">字段</th><th data-i18n="tableValue">值</th></tr></thead>
               <tbody id="all-metadata"></tbody>
             </table>
           </div>
@@ -99,16 +124,17 @@
 
       <footer>
         <p id="visit-counter-trigger" class="visit-counter-trigger" tabindex="0" role="button" aria-describedby="visit-counter-bubble" aria-expanded="false">
-          影迹·EXIF 不修改原图，也不保存图片或元数据。
+          <span data-i18n="footerPrivacy">影迹·EXIF 不修改原图，也不保存图片或元数据。</span>
           <span id="visit-counter-bubble" class="visit-counter-bubble" role="status" aria-live="polite" hidden></span>
         </p>
-        <p class="footer-credit">© 2026 E.O创作 · <a href="mailto:arthurolan99@gmail.com">arthurolan99@gmail.com</a></p>
+        <p class="footer-credit"><span data-i18n="footerCredit">© 2026 E.O创作</span> · <a href="mailto:arthurolan99@gmail.com">arthurolan99@gmail.com</a></p>
       </footer>
     </main>
 
     <script src="assets/vendor/exifreader/exif-reader.js"></script>
     <script src="assets/js/coordinates.js?v=0.1.5"></script>
-    <script src="assets/js/app.js?v=0.1.6"></script>
+    <script src="assets/js/tiff-preview.js?v=1.1.0"></script>
+    <script src="assets/js/app.js?v=1.1.0"></script>
     <script data-goatcounter="https://yingji-exif-arthurolan.goatcounter.com/count"
             data-goatcounter-settings='{"path": "/yingji-exif/"}'
             async src="assets/vendor/goatcounter/count.v5.js"

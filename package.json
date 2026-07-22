@@ -1,11 +1,11 @@
 {
   "name": "yingji-exif",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": true,
   "description": "影迹·EXIF：本地、隐私优先的摄影图片 EXIF 查看工具",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "check": "node --check assets/js/coordinates.js && node --check assets/js/app.js && node --test tests/*.test.js"
+    "check": "node --check assets/js/coordinates.js && node --check assets/js/tiff-preview.js && node --check assets/js/app.js && node --test tests/*.test.js"
   },
   "devDependencies": {
     "exifreader": "4.41.0"

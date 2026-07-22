@@ -71,7 +71,28 @@ button, a { -webkit-tap-highlight-color: transparent; }
   color: var(--muted);
   font-size: 13px;
 }
-.privacy-badge span { color: var(--success); font-size: 8px; }
+.privacy-badge > span:first-child { color: var(--success); font-size: 8px; }
+
+.masthead-actions { display: flex; align-items: center; gap: 18px; }
+.language-switch {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+}
+.language-button {
+  min-width: 46px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 11px;
+  cursor: pointer;
+}
+.language-button[aria-pressed="true"] { color: var(--bg); background: var(--accent); font-weight: 750; }
+.language-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .intro { padding: 78px 0 45px; }
 .eyebrow { margin: 0 0 14px; color: var(--accent); font-size: 11px; font-weight: 750; letter-spacing: 0.2em; }
@@ -84,6 +105,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-weight: 680;
   white-space: nowrap;
 }
+html[lang="en"] .intro h1 { max-width: 880px; white-space: normal; }
 .intro-copy { max-width: none; margin: 30px 0 0; color: var(--muted); font-size: 17px; line-height: 1.8; }
 
 .drop-zone {
@@ -134,7 +156,26 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .drop-zone h2 { margin: 0 0 6px; font-size: 25px; letter-spacing: -0.025em; }
 .drop-zone p { margin: 0; color: var(--muted); }
 .text-button { padding: 0; border: 0; color: var(--accent); background: none; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
-.format-note { justify-self: end; font-size: 12px; }
+.format-note { max-width: 460px; justify-self: end; font-size: 12px; line-height: 1.6; text-align: right; }
+
+.format-support {
+  margin-top: 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  color: var(--muted);
+  background: rgba(25, 28, 24, 0.55);
+}
+.format-support summary { padding: 15px 18px; color: var(--text); font-size: 13px; font-weight: 650; cursor: pointer; }
+.format-support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid var(--line-soft);
+  background: var(--line-soft);
+}
+.format-support-grid section { padding: 20px; background: var(--panel); }
+.format-support-grid h2 { margin: 0 0 8px; color: var(--text); font-size: 13px; }
+.format-support-grid p { margin: 0; font-size: 12px; line-height: 1.7; }
 
 .visually-hidden {
   position: absolute !important;
@@ -172,7 +213,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   background: var(--panel);
 }
 .preview-frame { display: grid; place-items: center; min-height: 420px; overflow: hidden; background: #0a0b0a; }
-.preview-frame img { display: block; width: 100%; max-height: 620px; object-fit: contain; }
+.preview-frame img, .preview-frame canvas { display: block; max-width: 100%; max-height: 620px; object-fit: contain; }
+.preview-frame img { width: 100%; }
+.preview-frame canvas { width: auto; height: auto; }
 .preview-fallback { padding: 40px; color: var(--muted); text-align: center; line-height: 1.7; }
 .file-panel { padding: 28px; }
 .file-panel h3 { margin: 0 0 23px; font-size: 14px; color: var(--muted); font-weight: 650; }
@@ -255,10 +298,12 @@ footer p { margin: 0; }
   .app-shell { width: min(100% - 28px, 680px); }
   .masthead { min-height: 72px; }
   .privacy-badge { font-size: 11px; }
+  .masthead-actions { gap: 10px; }
   .intro { padding: 58px 0 34px; }
   .drop-zone { grid-template-columns: auto 1fr; min-height: 148px; padding: 28px; }
-  .format-note { grid-column: 2; justify-self: start; }
+  .format-note { grid-column: 2; justify-self: start; text-align: left; }
   .overview-grid { grid-template-columns: 1fr; }
+  .format-support-grid { grid-template-columns: 1fr; }
   .preview-frame { min-height: 300px; }
   .metadata-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .metadata-grid > div:not(:nth-child(4n + 1)) { padding-left: 0; border-left: 0; }
@@ -270,7 +315,8 @@ footer p { margin: 0; }
 
 @media (max-width: 520px) {
   .brand { font-size: 17px; }
-  .privacy-badge { max-width: 130px; line-height: 1.35; text-align: right; }
+  .privacy-badge { display: none; }
+  .language-button { min-width: 42px; padding-inline: 8px; }
   .intro h1 { font-size: clamp(24px, 7.4vw, 36px); letter-spacing: -0.045em; }
   .intro-copy { font-size: 15px; }
   .drop-zone { display: flex; flex-direction: column; align-items: flex-start; gap: 17px; padding: 25px; }
