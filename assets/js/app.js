@@ -17,7 +17,7 @@
   const GROUP_LABELS_EN = { ...GROUP_LABELS, file: "File", composite: "Composite", pngText: "PNG text", thumbnail: "Thumbnail" };
   const MESSAGES = {
     "zh-CN": {
-      pageTitle: "一张照片背后的拍摄数据",
+      pageTitle: "照片背后的EXIF数据",
       title: "影迹·EXIF",
       metaDescription: "影迹·EXIF：在本机浏览器内查看照片拍摄参数与 GPS 位置。",
       languageLabel: "界面语言",
@@ -103,7 +103,7 @@
       mapAmap: "高德地图",
       mapBaidu: "百度地图",
       mapGoogle: "谷歌地图",
-      mainLabels: ["拍摄日期和时间", "拍摄者 / 作者", "版权信息", "相机品牌", "相机型号", "镜头型号", "实际焦距", "35 mm 等效焦距", "光圈", "快门速度", "感光度", "曝光补偿", "曝光模式", "测光模式", "白平衡", "闪光灯", "像素尺寸", "图像方向", "色彩空间", "相机软件"],
+      mainLabels: ["拍摄日期和时间", "拍摄者 / 作者", "版权信息", "相机品牌", "相机型号", "镜头型号", "实际焦距", "35 mm 等效焦距", "光圈", "快门速度", "感光度", "曝光补偿", "曝光模式", "测光模式", "白平衡", "闪光灯", "像素尺寸", "色彩空间", "相机软件", "图像描述"],
       enum: {
         exposure: ["自动曝光", "手动曝光", "自动包围曝光"],
         exposureProgram: ["未定义", "手动", "程序自动", "光圈优先", "快门优先", "创意程序", "动作程序", "人像模式", "风景模式"],
@@ -202,7 +202,7 @@
       mapAmap: "Amap",
       mapBaidu: "Baidu Maps",
       mapGoogle: "Google Maps",
-      mainLabels: ["Date and time captured", "Photographer / author", "Copyright", "Camera maker", "Camera model", "Lens model", "Focal length", "35 mm equivalent focal length", "Aperture", "Shutter speed", "ISO", "Exposure compensation", "Exposure mode", "Metering mode", "White balance", "Flash", "Pixel dimensions", "Orientation", "Color space", "Camera software"],
+      mainLabels: ["Date and time captured", "Photographer / author", "Copyright", "Camera maker", "Camera model", "Lens model", "Focal length", "35 mm equivalent focal length", "Aperture", "Shutter speed", "ISO", "Exposure compensation", "Exposure mode", "Metering mode", "White balance", "Flash", "Pixel dimensions", "Color space", "Camera software", "Image description"],
       enum: {
         exposure: ["Auto exposure", "Manual exposure", "Auto bracket"],
         exposureProgram: ["Not defined", "Manual", "Program AE", "Aperture priority", "Shutter priority", "Creative program", "Action program", "Portrait mode", "Landscape mode"],
@@ -647,9 +647,9 @@
       formatEnum(findTag(tags, ["WhiteBalance"]), "whiteBalance"),
       formatEnum(findTag(tags, ["Flash"]), "flash"),
       dimensions || formatDimensions(tags),
-      formatEnum(findTag(tags, ["Orientation"]), "orientation"),
       formatEnum(findTag(tags, ["ColorSpace", "ProfileDescription"]), "colorSpace"),
       readableTag(findTag(tags, ["Software"])),
+      readableTag(findTag(tags, ["ImageDescription"])),
     ];
     const rows = MESSAGES[currentLanguage].mainLabels.map((label, index) => ({ label, value: values[index] }));
     addDefinitionList(els.mainMetadata, rows);

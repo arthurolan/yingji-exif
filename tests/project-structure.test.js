@@ -24,7 +24,7 @@ test("页面名称和隐私提示使用已确认文案", () => {
   const html = fs.readFileSync(path.join(projectRoot, "index.html"), "utf8");
   const app = fs.readFileSync(path.join(projectRoot, "assets/js/app.js"), "utf8");
   assert.match(html, /<title>影迹·EXIF<\/title>/);
-  assert.match(html, /<h1 id="page-title"[^>]*>一张照片背后的拍摄数据<\/h1>/);
+  assert.match(html, /<h1 id="page-title"[^>]*>照片背后的EXIF数据<\/h1>/);
   assert.match(html, /图片不上传，仅在本机解析/);
   assert.match(html, /Sony ARW、Nikon NEF、Pentax PEF 与 DNG/);
   assert.match(html, /RAW 单张最大 150 MB/);
@@ -47,4 +47,7 @@ test("页面名称和隐私提示使用已确认文案", () => {
   assert.match(app, /"arw", "dng", "nef", "pef"/);
   assert.match(app, /yingji-exif-language/);
   assert.match(app, /Yingji · EXIF — Photo Metadata Viewer/);
+  assert.match(app, /"相机软件", "图像描述"/);
+  assert.doesNotMatch(app, /"像素尺寸", "图像方向"/);
+  assert.match(app, /readableTag\(findTag\(tags, \["ImageDescription"\]\)\)/);
 });
