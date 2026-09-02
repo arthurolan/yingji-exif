@@ -171,13 +171,11 @@
 
 本文件已于 2026 年 7 月 17 日确认定稿，作为后续开发、验证与发布的协作依据。
 
-## 13. E.O图文正式镜像规则
+## 13. E.O图文外部链接规则
 
-本项目是影迹·EXIF 的功能源码。E.O图文主站只在发布时读取本项目并生成 `https://eomoment.com/tools/yingji-exif/` 下的正式镜像。
+本项目是影迹·EXIF 唯一的功能源码和开发维护地点。
 
 - 元数据解析、格式支持、GPS/地图逻辑、界面交互、测试和版本说明，都应在本项目中维护。
-- 不要直接修改 E.O图文项目的 `.cloudflare-static/tools/yingji-exif/`；那是临时发布副本，不是源码。
-- 主站镜像中的 E.O 返回链接、`eo@eomoment.com`、canonical 和统计路径等站点包装由 E.O图文的发布脚本自动加入。
-- GitHub Pages 可作为备用入口保留，正式入口以 `eomoment.com/tools/yingji-exif/` 为准。
+- E.O图文网站仅链接本项目的 GitHub 仓库 `https://github.com/arthurolan/yingji-exif`，不再生成、部署或维护站内镜像。
 
-本规则补充于 2026 年 8 月 10 日，优先用于避免 E.O 主站镜像与本项目源码混淆。
+本规则更新于 2026 年 9 月 2 日，用于明确 E.O图文与本项目之间仅保留外部链接关系。

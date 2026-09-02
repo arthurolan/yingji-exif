@@ -62,14 +62,12 @@ npm test
 
 2026 年 7 月 17 日已完成首批六张真实 JPEG 样片的解析与浏览器回归测试。2026 年 7 月 22 日又以 ARW、DNG、NEF、PEF、HEIC、TIFF 各一张进行 V1.1 本地验证。样片因可能包含作者、版权和精确 GPS，默认不纳入 Git。
 
-## E.O图文正式镜像与维护规则
+## 源码与维护
 
-本项目是影迹·EXIF 的功能源码和开发维护地点。工具的正式访问入口现在由 E.O图文统一发布在：
+本项目是影迹·EXIF 唯一的功能源码和开发维护地点：
 
-`https://eomoment.com/tools/yingji-exif/`
+`https://github.com/arthurolan/yingji-exif`
 
-以后如果要修改元数据读取、格式支持、GPS/地图逻辑、界面交互、测试或版本说明，应先在本项目中修改、测试、提交和推送。不要直接修改 E.O图文项目中的 `.cloudflare-static/tools/yingji-exif/`，那里只是 Cloudflare 发布前自动生成的临时镜像目录，会被下一次生成覆盖。
+以后如需修改元数据读取、格式支持、GPS/地图逻辑、界面交互、测试或版本说明，应在本项目中修改、测试、提交和推送。
 
-E.O图文项目中的 `scripts/prepare-cloudflare-tools.sh` 会读取本项目的静态文件，生成 `eomoment.com/tools/yingji-exif/` 下的正式镜像，并自动加入 E.O 返回链接、`eo@eomoment.com`、canonical 与访问统计路径等站点级包装。
-
-GitHub Pages 可继续保留为备用入口和本项目的独立发布结果；正式公开入口以 `eomoment.com/tools/yingji-exif/` 为准。
+E.O图文网站仅提供本 GitHub 项目的链接，不再生成、部署或维护影迹·EXIF 的站内镜像。
