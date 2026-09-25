@@ -232,7 +232,6 @@
     status: document.querySelector("#status"),
     result: document.querySelector("#result"),
     resultFileName: document.querySelector("#result-file-name"),
-    clearButton: document.querySelector("#clear-button"),
     floatingClearButton: document.querySelector("#floating-clear-button"),
     pageDropOverlay: document.querySelector("#page-drop-overlay"),
     pageDropHint: document.querySelector("#page-drop-hint"),
@@ -904,7 +903,6 @@
     if (event.target !== els.chooseButton) els.fileInput.click();
   });
   els.fileInput.addEventListener("change", () => processFile(els.fileInput.files[0]));
-  els.clearButton.addEventListener("click", exitPhoto);
   els.floatingClearButton.addEventListener("click", exitPhoto);
   els.copyCoordinates.addEventListener("click", copyCoordinates);
   els.appleMode.addEventListener("change", renderMapLinks);

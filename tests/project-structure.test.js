@@ -28,8 +28,8 @@ test("页面名称和隐私提示使用已确认文案", () => {
   assert.match(html, /图片不上传，仅在本机解析/);
   assert.match(html, /Sony ARW、Nikon NEF、Pentax PEF 与 DNG/);
   assert.match(html, /RAW 单张最大 150 MB/);
-  assert.match(html, /<button id="clear-button"[^>]*>退出照片<\/button>/);
   assert.match(html, /<button id="floating-clear-button"[^>]*data-i18n="clearButton"[^>]*hidden>退出照片<\/button>/);
+  assert.doesNotMatch(html, /id="clear-button"/);
   assert.match(html, /id="page-drop-overlay"[^>]*aria-hidden="true"[^>]*hidden/);
   assert.match(html, /© 2026 E\.O创作/);
   assert.match(html, /mailto:eo@eomoment\.com/);
