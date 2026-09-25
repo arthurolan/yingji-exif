@@ -7,7 +7,7 @@
     <meta name="color-scheme" content="dark">
     <link rel="canonical" href="https://arthurolan.github.io/yingji-exif/">
     <title>影迹·EXIF</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=1.1.0">
+    <link rel="stylesheet" href="assets/css/style.css?v=1.1.1">
   </head>
   <body>
     <main class="app-shell">
@@ -122,6 +122,8 @@
         </details>
       </section>
 
+      <button id="floating-clear-button" class="floating-clear-button" type="button" data-i18n="clearButton" hidden>退出照片</button>
+
       <footer>
         <p id="visit-counter-trigger" class="visit-counter-trigger" tabindex="0" role="button" aria-describedby="visit-counter-bubble" aria-expanded="false">
           <span data-i18n="footerPrivacy">影迹·EXIF 不修改原图，也不保存图片或元数据。</span>
@@ -131,10 +133,18 @@
       </footer>
     </main>
 
+    <div id="page-drop-overlay" class="page-drop-overlay" aria-hidden="true" hidden>
+      <div class="page-drop-prompt">
+        <div class="drop-icon" aria-hidden="true"><span></span></div>
+        <p data-i18n="pageDropPrompt">松开以查看这张照片</p>
+        <span id="page-drop-hint" data-i18n="pageDropHint">将替换当前照片</span>
+      </div>
+    </div>
+
     <script src="assets/vendor/exifreader/exif-reader.js"></script>
     <script src="assets/js/coordinates.js?v=0.1.5"></script>
     <script src="assets/js/tiff-preview.js?v=1.1.0"></script>
-    <script src="assets/js/app.js?v=1.1.0"></script>
+    <script src="assets/js/app.js?v=1.1.1"></script>
     <script data-goatcounter="https://yingji-exif-arthurolan.goatcounter.com/count"
             data-goatcounter-settings='{"path": "/yingji-exif/"}'
             async src="assets/vendor/goatcounter/count.v5.js"

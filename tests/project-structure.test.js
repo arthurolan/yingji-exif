@@ -29,8 +29,10 @@ test("页面名称和隐私提示使用已确认文案", () => {
   assert.match(html, /Sony ARW、Nikon NEF、Pentax PEF 与 DNG/);
   assert.match(html, /RAW 单张最大 150 MB/);
   assert.match(html, /<button id="clear-button"[^>]*>退出照片<\/button>/);
+  assert.match(html, /<button id="floating-clear-button"[^>]*data-i18n="clearButton"[^>]*hidden>退出照片<\/button>/);
+  assert.match(html, /id="page-drop-overlay"[^>]*aria-hidden="true"[^>]*hidden/);
   assert.match(html, /© 2026 E\.O创作/);
-  assert.match(html, /mailto:arthurolan99@gmail\.com/);
+  assert.match(html, /mailto:eo@eomoment\.com/);
   assert.match(html, /id="visit-counter-trigger"/);
   assert.match(html, /id="visit-counter-bubble"[^>]*role="status"[^>]*aria-live="polite"[^>]*hidden/);
   assert.match(html, /data-goatcounter="https:\/\/yingji-exif-arthurolan\.goatcounter\.com\/count"/);
@@ -46,6 +48,8 @@ test("页面名称和隐私提示使用已确认文案", () => {
   assert.match(app, /const MAX_PREVIEW_FILE_SIZE = 100 \* 1024 \* 1024/);
   assert.match(app, /"arw", "dng", "nef", "pef"/);
   assert.match(app, /yingji-exif-language/);
+  assert.match(app, /document\.addEventListener\("drop"/);
+  assert.match(app, /pageDropPrompt: "松开以查看这张照片"/);
   assert.match(app, /Yingji · EXIF — Photo Metadata Viewer/);
   assert.match(app, /"相机软件", "图像描述"/);
   assert.doesNotMatch(app, /"像素尺寸", "图像方向"/);

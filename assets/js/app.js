@@ -24,6 +24,9 @@
       privacyBadge: "图片不上传，仅在本机解析",
       introCopy: "拖入或点击选择一张照片，查看相机、镜头、曝光参数与拍摄位置。原图不会离开你的设备。",
       dropTitle: "拖入图片",
+      pageDropPrompt: "松开以查看这张照片",
+      pageDropHint: "将替换当前照片",
+      pageDropHintEmpty: "可以在页面任意位置松开",
       or: "或",
       chooseButton: "点击选择",
       formatNote: "支持 JPEG、PNG、WebP、HEIC/HEIF、TIFF、Sony ARW、Nikon NEF、Pentax PEF 与 DNG · 单张最大 300 MB",
@@ -123,6 +126,9 @@
       privacyBadge: "No uploads — processed locally",
       introCopy: "Drop in a photo to inspect the camera, lens, exposure and location data. The original file never leaves your device.",
       dropTitle: "Drop an image",
+      pageDropPrompt: "Drop to view this photo",
+      pageDropHint: "This will replace the current photo",
+      pageDropHintEmpty: "Drop anywhere on this page",
       or: "or",
       chooseButton: "choose a file",
       formatNote: "JPEG, PNG, WebP, HEIC/HEIF, TIFF, Sony ARW, Nikon NEF, Pentax PEF and DNG · 300 MB maximum",
@@ -227,6 +233,9 @@
     result: document.querySelector("#result"),
     resultFileName: document.querySelector("#result-file-name"),
     clearButton: document.querySelector("#clear-button"),
+    floatingClearButton: document.querySelector("#floating-clear-button"),
+    pageDropOverlay: document.querySelector("#page-drop-overlay"),
+    pageDropHint: document.querySelector("#page-drop-hint"),
     previewImage: document.querySelector("#preview-image"),
     previewCanvas: document.querySelector("#preview-canvas"),
     previewFallback: document.querySelector("#preview-fallback"),
@@ -253,6 +262,7 @@
   let currentLanguage = "zh-CN";
   let currentStatus = null;
   let currentResult = null;
+  let pageDragDepth = 0;
 
   function template(text, variables) {
     return String(text).replace(/\{(\w+)\}/g, (match, key) => variables && variables[key] !== undefined ? variables[key] : "");
@@ -773,7 +783,35 @@
     els.gpsPanel.hidden = true;
     els.allMetadataPanel.open = false;
     els.fileInput.value = "";
+    els.floatingClearButton.hidden = true;
     setStatusMessage("", {}, "");
+  }
+
+  function exitPhoto() {
+    resetResult();
+    els.dropZone.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function isFileDrag(event) {
+    return Boolean(event.dataTransfer && Array.from(event.dataTransfer.types || []).includes("Files"));
+  }
+
+  function showPageDropOverlay() {
+    els.pageDropHint.textContent = t(currentResult ? "pageDropHint" : "pageDropHintEmpty");
+    els.pageDropOverlay.hidden = false;
+    document.body.classList.add("is-page-dragging");
+  }
+
+  function hidePageDropOverlay() {
+    pageDragDepth = 0;
+    els.pageDropOverlay.hidden = true;
+    document.body.classList.remove("is-page-dragging");
+  }
+
+  function acceptDroppedFiles(event) {
+    const files = event.dataTransfer ? Array.from(event.dataTransfer.files) : [];
+    if (files.length > 1) setStatusMessage("oneFileOnly", {}, "warning");
+    processFile(files[0]);
   }
 
   function displayFormat(tags, extension) {
@@ -841,6 +879,7 @@
       currentResult = { file, extension, tags, displayedDimensions, previewMessageKey };
       renderCurrentResult();
       els.result.hidden = false;
+      els.floatingClearButton.hidden = false;
 
       const count = metadataCount(tags);
       if (hasExifMetadata(tags)) {
@@ -865,7 +904,8 @@
     if (event.target !== els.chooseButton) els.fileInput.click();
   });
   els.fileInput.addEventListener("change", () => processFile(els.fileInput.files[0]));
-  els.clearButton.addEventListener("click", resetResult);
+  els.clearButton.addEventListener("click", exitPhoto);
+  els.floatingClearButton.addEventListener("click", exitPhoto);
   els.copyCoordinates.addEventListener("click", copyCoordinates);
   els.appleMode.addEventListener("change", renderMapLinks);
   els.visitCounterTrigger.addEventListener("mouseenter", showVisitCounter);
@@ -883,23 +923,29 @@
     button.addEventListener("click", () => applyLanguage(button.dataset.language, true));
   }
 
-  for (const eventName of ["dragenter", "dragover"]) {
-    els.dropZone.addEventListener(eventName, (event) => {
-      event.preventDefault();
-      els.dropZone.classList.add("is-dragging");
-      if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
-    });
-  }
-  for (const eventName of ["dragleave", "dragend"]) {
-    els.dropZone.addEventListener(eventName, () => els.dropZone.classList.remove("is-dragging"));
-  }
-  els.dropZone.addEventListener("drop", (event) => {
+  document.addEventListener("dragenter", (event) => {
+    if (!isFileDrag(event)) return;
     event.preventDefault();
-    els.dropZone.classList.remove("is-dragging");
-    const files = event.dataTransfer ? Array.from(event.dataTransfer.files) : [];
-    if (files.length > 1) setStatusMessage("oneFileOnly", {}, "warning");
-    processFile(files[0]);
+    pageDragDepth += 1;
+    showPageDropOverlay();
   });
+  document.addEventListener("dragover", (event) => {
+    if (!isFileDrag(event)) return;
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
+  });
+  document.addEventListener("dragleave", (event) => {
+    if (!isFileDrag(event)) return;
+    pageDragDepth = Math.max(0, pageDragDepth - 1);
+    if (pageDragDepth === 0) hidePageDropOverlay();
+  });
+  document.addEventListener("drop", (event) => {
+    if (!isFileDrag(event)) return;
+    event.preventDefault();
+    hidePageDropOverlay();
+    acceptDroppedFiles(event);
+  });
+  window.addEventListener("dragend", hidePageDropOverlay);
 
   async function loadLocalTestSample() {
     if (!new Set(["127.0.0.1", "localhost"]).has(window.location.hostname)) return;

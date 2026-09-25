@@ -204,6 +204,59 @@ html[lang="en"] .intro h1 { max-width: 880px; white-space: normal; }
   cursor: pointer;
 }
 .secondary-button:hover { border-color: var(--accent); color: var(--accent); }
+.secondary-button:focus-visible, .floating-clear-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.floating-clear-button {
+  position: fixed;
+  z-index: 20;
+  right: max(22px, env(safe-area-inset-right));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  min-height: 48px;
+  padding: 12px 19px;
+  border: 1px solid #697062;
+  border-radius: 999px;
+  color: var(--text);
+  background: rgba(25, 28, 24, 0.94);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+.floating-clear-button:hover { border-color: var(--accent); color: var(--accent); background: var(--panel-light); }
+.floating-clear-button[hidden] { display: none; }
+
+.page-drop-overlay {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(10, 11, 10, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+.page-drop-overlay[hidden] { display: none; }
+.page-drop-prompt {
+  display: grid;
+  justify-items: center;
+  width: min(560px, 100%);
+  padding: 48px 28px;
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius);
+  color: var(--text);
+  background: var(--panel);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+.page-drop-prompt p { margin: 22px 0 8px; font-size: clamp(23px, 4vw, 34px); font-weight: 720; letter-spacing: -0.03em; }
+.page-drop-prompt > span { color: var(--muted); font-size: 14px; }
+body.is-page-dragging { overflow: hidden; }
 
 .overview-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.75fr); gap: 18px; }
 .preview-frame, .file-panel, .metadata-panel, .gps-panel, .all-metadata-panel {
@@ -327,6 +380,10 @@ footer p { margin: 0; }
   .metadata-grid { grid-template-columns: 1fr; }
   .metadata-grid > div { padding-left: 0 !important; border-left: 0 !important; }
   .map-links { grid-template-columns: 1fr; }
+  .floating-clear-button {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
